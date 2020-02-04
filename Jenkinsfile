@@ -8,7 +8,12 @@ pipeline {
                 docker { image 'node:alpine' }
             }
             steps {
-                echo 'Prepare'
+                dir('code/frontend') {
+                    npm install
+                }
+                dir('code/backend') {
+                    npm install
+                }
             }
         }
         stage('Build') {
@@ -16,7 +21,12 @@ pipeline {
                 docker { image 'node:alpine' }
             }
             steps {
-                echo 'Build'      
+                dir('code/frontend') {
+                    npm run build
+                }
+                dir('code/backend') {
+                    npm run build
+                }
             }
         }
         stage('Static Analysis') {
