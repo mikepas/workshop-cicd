@@ -47,7 +47,9 @@ pipeline {
                 docker { image 'node:alpine' }
             }
             steps {
-                echo 'Test'
+                dir('code/backend') {
+                    sh 'npm run test'
+                }
             }
         }
         stage('e2e Test') {
