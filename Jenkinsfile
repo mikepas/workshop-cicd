@@ -53,13 +53,17 @@ pipeline {
             }
         }
         stage('e2e Test') {
-            steps {             
-                sh 'docker-compose -f docker-compose-e2e.yml build'
-                sh 'docker-compose -f docker-compose-e2e.yml up -d frontend backend'
+            steps {
+                dir('code/frontend') {           
+                    sh 'docker-compose -f docker-compose-e2e.yml build'
+                    sh 'docker-compose -f docker-compose-e2e.yml up -d frontend backend'
+                }
             }
             post {
                 always {
-                    sh 'docker-compose -f docker-compose-e2e.yml down --rmi=all -v'
+                    dir('code/frontend') {
+                        sh 'docker-compose -f docker-compose-e2e.yml down --rmi=all -v'
+                    }
                 }
             }
         }
